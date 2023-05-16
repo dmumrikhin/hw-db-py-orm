@@ -31,21 +31,37 @@ session = Session()
 
 choise = input('Выберите пункт меню:\n1.Выборка магазинов, продающих определенного издателя\
       \n2.Данные о продажах определенного издателя\n')
-Pub_id = input('Введите айди издателя: ')
+Pub_id = input('Введите издателя: ')
 
 if choise == '1':
-    ps = session.query(Publisher.name, Book.title, Sale.price, Sale.date_sale
-        ).join(Book).join(Stock).join(Shop
-        ).join(Sale).filter(Publisher.id == Pub_id).all()
-    for item in ps:
-        print(f'{item[1]}'.ljust(40)+f'| {item[0]}'.ljust(10
-                        )+f' | {item[2]} | {item[3]}')
+    if Pub_id.isdigit():
+        ps = session.query(Publisher.name, Book.title, Sale.price, Sale.date_sale
+            ).join(Book).join(Stock).join(Shop
+            ).join(Sale).filter(Publisher.id == Pub_id).all()
+        for item in ps:
+            print(f'{item[1]}'.ljust(40)+f'| {item[0]}'.ljust(10
+                )+f' | {item[2]} | {item[3]}')
+    else:
+        ps = session.query(Publisher.name, Book.title, Sale.price, Sale.date_sale
+            ).join(Book).join(Stock).join(Shop
+            ).join(Sale).filter(Publisher.name == Pub_id).all()
+        for item in ps:
+            print(f'{item[1]}'.ljust(40)+f'| {item[0]}'.ljust(10
+                )+f' | {item[2]} | {item[3]}')
 if choise == '2':
-    ps = session.query(Publisher, Shop.name
-        ).join(Book).join(Stock).join(Shop
-        ).filter(Publisher.id == Pub_id).all()
-    for item in ps:
-        print(f'{item[1]}')
+    if Pub_id.isdigit():
+        ps = session.query(Publisher, Shop.name
+            ).join(Book).join(Stock).join(Shop
+            ).filter(Publisher.id == Pub_id).all()
+        for item in ps:
+            print(f'{item[1]}')
+    else:
+        ps = session.query(Publisher, Shop.name
+            ).join(Book).join(Stock).join(Shop
+            ).filter(Publisher.name == Pub_id).all()
+        for item in ps:
+            print(f'{item[1]}')
+
 
 session.close
 
