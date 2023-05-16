@@ -29,14 +29,23 @@ session = Session()
 #     }[record.get('model')]
 #     session.add(model(id=record.get('pk'), **record.get('fields')))
 
+choise = input('Выберите пункт меню:\n1.Выборка магазинов, продающих определенного издателя\
+      \n2.Данные о продажах определенного издателя\n')
 Pub_id = input('Введите айди издателя: ')
 
-ps = session.query(Publisher.name, Book.title, Sale.price, Sale.date_sale
-    ).join(Book).join(Stock).join(Shop
-    ).join(Sale).filter(Publisher.id == Pub_id).all()
-for item in ps:
-    print(f'{item[1]}'.ljust(40)+f'| {item[0]}'.ljust(10
-                    )+f' | {item[2]} | {item[3]}')
+if choise == '1':
+    ps = session.query(Publisher.name, Book.title, Sale.price, Sale.date_sale
+        ).join(Book).join(Stock).join(Shop
+        ).join(Sale).filter(Publisher.id == Pub_id).all()
+    for item in ps:
+        print(f'{item[1]}'.ljust(40)+f'| {item[0]}'.ljust(10
+                        )+f' | {item[2]} | {item[3]}')
+if choise == '2':
+    ps = session.query(Publisher, Shop.name
+        ).join(Book).join(Stock).join(Shop
+        ).filter(Publisher.id == Pub_id).all()
+    for item in ps:
+        print(f'{item[1]}')
 
 session.close
 
